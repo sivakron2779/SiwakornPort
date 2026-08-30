@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IncidentWeb - Architecture</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="index.html">Architecture Showcase</a>
+    <div class="nav"><a href="crm-pega.html">CRM PEGA</a><a href="nt-reconciliation.html">Next: NT</a><a href="index.html">Index</a></div>
+  </div>
+
+  <main>
+    <header class="hero">
+      <h1>IncidentWeb</h1>
+      <p class="lead">Full-stack Incident & Problem Management System สำหรับรับแจ้งเหตุการณ์ จัดลำดับความสำคัญ มอบหมายทีม ติดตาม SLA สรุป root cause export เอกสาร และแสดง dashboard สำหรับ User, Manager และ Admin</p>
+      <p><span class="pill">Next.js</span><span class="pill">Express API</span><span class="pill">PostgreSQL</span><span class="pill">JWT / RBAC</span><span class="pill">Report Export</span><span class="pill">Dashboard</span></p>
+    </header>
+
+    <section>
+      <h2>Connected Architecture Map</h2>
+      <div class="architecture-frame">
+        <div class="architecture-canvas">
+          <div class="arch-boundary" style="left:38px;top:28px;width:1004px;height:124px;"><span>User Interface Layer</span></div>
+          <div class="arch-boundary" style="left:126px;top:184px;width:830px;height:284px;"><span>Application / Domain Services</span></div>
+          <div class="arch-boundary" style="left:38px;top:506px;width:1004px;height:132px;"><span>Data / Document / Monitoring Layer</span></div>
+
+          <div class="arch-box arch-client" style="left:66px;top:70px;width:154px;"><strong>User Portal</strong><span>create incident, attach detail, follow status</span></div>
+          <div class="arch-box arch-client" style="left:246px;top:70px;width:162px;"><strong>Manager View</strong><span>team workload, SLA, approval</span></div>
+          <div class="arch-box arch-client" style="left:438px;top:70px;width:170px;"><strong>Admin Console</strong><span>master data, import log, monitoring</span></div>
+          <div class="arch-box arch-client" style="left:640px;top:70px;width:170px;"><strong>Report Pages</strong><span>incident, problem, project reports</span></div>
+          <div class="arch-box arch-security" style="left:836px;top:70px;width:160px;"><strong>Authentication</strong><span>JWT, role-based access</span></div>
+
+          <div class="arch-box arch-service" style="left:176px;top:226px;width:176px;"><strong>Next.js Frontend</strong><span>routing, forms, editor, dashboards</span></div>
+          <div class="arch-box arch-service" style="left:420px;top:226px;width:176px;"><strong>Express API</strong><span>REST endpoints, validation, service layer</span></div>
+          <div class="arch-box arch-service" style="left:668px;top:226px;width:176px;"><strong>Incident Service</strong><span>triage, assignment, status, SLA</span></div>
+          <div class="arch-box arch-service" style="left:292px;top:366px;width:190px;"><strong>Problem Analysis</strong><span>root cause, impact, corrective action</span></div>
+          <div class="arch-box arch-service" style="left:576px;top:366px;width:190px;"><strong>Export Service</strong><span>Excel, Word, PDF, template parser</span></div>
+
+          <div class="arch-box arch-db" style="left:72px;top:542px;width:174px;"><strong>PostgreSQL</strong><span>incidents, users, teams, projects</span></div>
+          <div class="arch-box arch-db" style="left:306px;top:542px;width:174px;"><strong>Audit / Logs</strong><span>import logs, action history, status trace</span></div>
+          <div class="arch-box arch-report" style="left:548px;top:542px;width:174px;"><strong>Documents</strong><span>incident report, problem report, Excel export</span></div>
+          <div class="arch-box arch-report" style="left:790px;top:542px;width:190px;"><strong>Dashboards</strong><span>SLA, workload, trend, project summary</span></div>
+
+          <svg viewBox="0 0 1080 680" aria-hidden="true">
+            <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7a8699"/></marker></defs>
+            <path d="M220 102 C250 160 250 190 264 226" marker-end="url(#arrow)"/>
+            <path d="M324 152 C312 184 286 206 274 226" marker-end="url(#arrow)"/>
+            <path d="M520 152 C520 184 516 204 510 226" marker-end="url(#arrow)"/>
+            <path d="M724 152 C690 184 650 210 596 244" marker-end="url(#arrow)"/>
+            <path d="M836 106 C770 136 708 190 596 244" marker-end="url(#arrow)"/>
+            <path d="M352 262 C380 262 392 262 420 262" marker-end="url(#arrow)"/>
+            <path d="M596 262 C624 262 640 262 668 262" marker-end="url(#arrow)"/>
+            <path d="M724 290 C662 332 600 352 482 386" marker-end="url(#arrow)"/>
+            <path d="M748 290 C714 330 668 350 664 366" marker-end="url(#arrow)"/>
+            <path d="M388 430 C326 492 218 516 164 542" marker-end="url(#arrow)"/>
+            <path d="M444 430 C436 488 404 516 394 542" marker-end="url(#arrow)"/>
+            <path d="M672 430 C650 488 642 516 638 542" marker-end="url(#arrow)"/>
+            <path d="M766 430 C808 488 858 516 884 542" marker-end="url(#arrow)"/>
+            <path class="dash" d="M888 542 C940 426 924 222 908 152" marker-end="url(#arrow)"/>
+            <text x="246" y="176">create / update</text>
+            <text x="374" y="254">REST</text>
+            <text x="608" y="254">service call</text>
+            <text x="680" y="472">export</text>
+            <text x="848" y="474">analytics</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Architecture Layers</h2>
+      <div class="lanes">
+        <div class="lane"><div class="lane-title">Frontend</div><div class="lane-body">Next.js UI สำหรับ incident list/detail, create/edit form, project reports, team dashboard, admin pages และ rich text/report editor</div></div>
+        <div class="lane"><div class="lane-title">API Layer</div><div class="lane-body">Express REST API รองรับ authentication, authorization, request validation, pagination, filtering, status update และ report/export endpoints</div></div>
+        <div class="lane"><div class="lane-title">Domain Logic</div><div class="lane-body">Incident lifecycle, severity/priority, team assignment, SLA tracking, problem analysis, corrective action และ approval/status control</div></div>
+        <div class="lane"><div class="lane-title">Data Layer</div><div class="lane-body">PostgreSQL สำหรับ incidents, users, teams, projects, templates, import logs, action history และ analytics-ready summary</div></div>
+        <div class="lane"><div class="lane-title">Document Layer</div><div class="lane-body">Export service สำหรับ Excel, Word, PDF, template parsing, project report และ incident/problem report package</div></div>
+        <div class="lane"><div class="lane-title">Monitoring</div><div class="lane-body">Dashboard สำหรับ workload, SLA, incident trend, project status, import result, admin analytics และ operational trace</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Feature Matrix</h2>
+      <table>
+        <tr><th>Feature Group</th><th>Feature</th><th>Purpose</th><th>Primary Role</th></tr>
+        <tr><td>Incident Intake</td><td>Create incident, edit detail, attach context, set severity/priority</td><td>เก็บข้อมูลเหตุการณ์ให้ครบตั้งแต่ต้นทาง</td><td>User</td></tr>
+        <tr><td>Assignment</td><td>Assign team/owner, update status, transfer owner</td><td>ควบคุมผู้รับผิดชอบและสถานะงาน</td><td>Manager</td></tr>
+        <tr><td>Problem Analysis</td><td>Root cause, impact, workaround, corrective/preventive action</td><td>แปลง incident เป็นบทเรียนและแนวทางแก้ถาวร</td><td>Manager / Admin</td></tr>
+        <tr><td>Reporting</td><td>Project report, incident report, problem report</td><td>สรุปข้อมูลสำหรับ review และส่งต่อผู้เกี่ยวข้อง</td><td>User / Manager</td></tr>
+        <tr><td>Export</td><td>Excel export, Word export, PDF export, template parser</td><td>สร้างเอกสารมาตรฐานจากข้อมูลในระบบ</td><td>User / Admin</td></tr>
+        <tr><td>Dashboard</td><td>Team dashboard, admin analytics, project monitoring</td><td>ดู workload, SLA, trend และสถานะการดำเนินงาน</td><td>Manager / Admin</td></tr>
+        <tr><td>Administration</td><td>User/team/project management, import logs, templates</td><td>ดูแล master data และ configuration ของระบบ</td><td>Admin</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>User Flow</h2>
+      <div class="diagram">
+        <div class="flow">
+          <div class="node input"><strong>Login</strong><span>เข้าสู่ระบบตาม role</span></div><div class="arrow">→</div>
+          <div class="node process"><strong>Create Incident</strong><span>กรอก project, title, impact, severity, description</span></div><div class="arrow">→</div>
+          <div class="node process"><strong>Track Status</strong><span>ดู assigned owner, progress, resolution</span></div><div class="arrow">→</div>
+          <div class="node output"><strong>Export / Report</strong><span>ดาวน์โหลด Excel, Word หรือ PDF</span></div>
+        </div>
+      </div>
+      <table>
+        <tr><th>Step</th><th>User Action</th><th>System Response</th></tr>
+        <tr><td>1</td><td>เลือก project และสร้าง incident</td><td>ระบบ validate field, สร้าง incident number และบันทึกลง database</td></tr>
+        <tr><td>2</td><td>เพิ่มรายละเอียด อาการ ผลกระทบ หรือข้อมูลประกอบ</td><td>ระบบเก็บ audit trail และแสดงข้อมูลใน incident detail</td></tr>
+        <tr><td>3</td><td>ติดตามสถานะและผลการแก้ไข</td><td>ระบบแสดง owner, status, timeline และ resolution</td></tr>
+        <tr><td>4</td><td>export รายงานเมื่อปิดเคสหรือส่งต่อ</td><td>ระบบ generate เอกสารจากข้อมูลล่าสุดในระบบ</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Manager Flow</h2>
+      <div class="diagram">
+        <div class="flow">
+          <div class="node input"><strong>Team Dashboard</strong><span>ดูงานรวมของทีม</span></div><div class="arrow">→</div>
+          <div class="node process"><strong>Triage</strong><span>จัดลำดับ severity, priority, SLA</span></div><div class="arrow">→</div>
+          <div class="node process"><strong>Assign / Review</strong><span>มอบหมาย owner และติดตาม progress</span></div><div class="arrow">→</div>
+          <div class="node output"><strong>Summary</strong><span>ดู trend, workload, project report</span></div>
+        </div>
+      </div>
+      <table>
+        <tr><th>Manager Area</th><th>Description</th></tr>
+        <tr><td>Workload Control</td><td>ดูจำนวน incident ตามทีม owner status และ project เพื่อกระจายงาน</td></tr>
+        <tr><td>SLA / Priority</td><td>แยก incident ที่ critical, overdue หรือกระทบผู้ใช้งานจำนวนมาก</td></tr>
+        <tr><td>Problem Review</td><td>ตรวจ root cause และ corrective action สำหรับ incident ที่เกิดซ้ำหรือมี impact สูง</td></tr>
+        <tr><td>Project Summary</td><td>สรุปสถานะ incident/problem ราย project สำหรับรายงานผู้บริหารหรือทีม operation</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Admin Flow</h2>
+      <div class="diagram">
+        <div class="flow">
+          <div class="node input"><strong>Admin Console</strong><span>เข้าสู่หน้าดูแลระบบ</span></div><div class="arrow">→</div>
+          <div class="node process"><strong>Master Data</strong><span>users, teams, projects, roles</span></div><div class="arrow">→</div>
+          <div class="node process"><strong>Templates / Import</strong><span>จัดการ template และ import logs</span></div><div class="arrow">→</div>
+          <div class="node output"><strong>Analytics</strong><span>monitoring, trend, operational trace</span></div>
+        </div>
+      </div>
+      <table>
+        <tr><th>Admin Area</th><th>Description</th></tr>
+        <tr><td>User & Role Management</td><td>กำหนดสิทธิ์ตาม role เพื่อแยกมุมมอง User, Manager และ Admin</td></tr>
+        <tr><td>Project / Team Setup</td><td>จัดการ project, team mapping และ owner สำหรับการ assign incident</td></tr>
+        <tr><td>Template Management</td><td>ดูแล export template, parse header และ mapping field สำหรับเอกสาร</td></tr>
+        <tr><td>Import / Monitoring</td><td>ตรวจ import logs, error, analytics และสถานะการทำงานของระบบ</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Real Operation Scenarios</h2>
+      <table>
+        <tr><th>Scenario</th><th>Flow</th><th>System Output</th></tr>
+        <tr><td>Production incident กระทบผู้ใช้งาน</td><td>User สร้าง incident → Manager triage severity → assign owner → update workaround/resolution</td><td>incident timeline, current status, owner, export incident report</td></tr>
+        <tr><td>ปัญหาเกิดซ้ำใน project เดิม</td><td>Manager review incident history → เปิด problem analysis → ระบุ root cause และ corrective action</td><td>problem report, trend by project, action tracking</td></tr>
+        <tr><td>ต้องส่งรายงานให้ผู้บริหาร</td><td>เลือก project/report period → filter incident/problem → export Word/PDF/Excel</td><td>formal report package พร้อมข้อมูลจาก database ล่าสุด</td></tr>
+        <tr><td>ข้อมูล import/template มีปัญหา</td><td>Admin ตรวจ import log/template parser → แก้ mapping/header → rerun หรือแจ้งทีมที่เกี่ยวข้อง</td><td>import trace, validation result, corrected export template</td></tr>
+        <tr><td>ตรวจ workload รายทีม</td><td>Manager เปิด team dashboard → filter team/status/priority → drilldown เคสที่ค้าง</td><td>workload summary, overdue list, incident detail view</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>Database / API / Export</h2>
+      <div class="grid three">
+        <div class="panel">
+          <h3>Core Tables</h3>
+          <ul>
+            <li>users, roles, teams</li>
+            <li>projects, incidents</li>
+            <li>incident history, comments, attachments metadata</li>
+            <li>templates, import logs, analytics summaries</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>API Surface</h3>
+          <ul>
+            <li>incident CRUD and filtering</li>
+            <li>project report endpoints</li>
+            <li>team dashboard endpoints</li>
+            <li>export and template endpoints</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Export Outputs</h3>
+          <ul>
+            <li>incident Excel export</li>
+            <li>incident Word report</li>
+            <li>incident/problem PDF report</li>
+            <li>template header parsing and mapped export</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Infrastructure / Runtime</h2>
+      <div class="grid">
+        <div class="panel">
+          <h3>Application Runtime</h3>
+          <p>Frontend ทำงานเป็น Next.js application, backend เป็น Express TypeScript API, database เป็น PostgreSQL และ report/export service ใช้ library แยกสำหรับ document generation</p>
+        </div>
+        <div class="panel">
+          <h3>Operational Concerns</h3>
+          <p>ระบบออกแบบให้ตรวจสอบย้อนหลังได้ผ่าน audit/import logs, รองรับ role-based access, dashboard monitoring, export consistency และการแยก domain service เพื่อลด coupling ระหว่าง incident workflow กับ document generation</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="diagram-fit.js" defer></script>
+</body>
+</html>

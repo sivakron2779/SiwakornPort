@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Quality Management System - Architecture</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="index.html">Architecture Showcase</a>
+    <div class="nav"><a href="goanywhere.html">Next: GoAnywhere</a><a href="index.html">Index</a></div>
+  </div>
+  <main>
+    <header class="hero">
+      <h1>Data Quality Management System</h1>
+      <p class="lead">ระบบบริหารจัดการคุณภาพข้อมูลสำหรับรับไฟล์ข้อมูลหลายกลุ่ม ตรวจสอบความถูกต้อง จัดเก็บ staging/central database และสร้างผลลัพธ์สำหรับ KPI, grade, monitoring และรายงาน</p>
+      <p><span class="pill">DQM</span><span class="pill">CloverDX</span><span class="pill">PostgreSQL</span><span class="pill">FTP/SFTP</span><span class="pill">Data Quality Rules</span><span class="pill">KPI</span></p>
+    </header>
+
+    <section>
+      <h2>Connected Architecture Map</h2>
+      <div class="architecture-frame">
+        <div class="architecture-canvas">
+          <div class="arch-boundary" style="left:38px;top:34px;width:1004px;height:104px;"><span>Source / Scheduler Layer</span></div>
+          <div class="arch-boundary" style="left:168px;top:170px;width:744px;height:260px;"><span>DQM Processing Services</span></div>
+          <div class="arch-boundary" style="left:38px;top:474px;width:1004px;height:150px;"><span>Data / Output / Operations</span></div>
+          <div class="arch-box arch-client" style="left:72px;top:68px;width:180px;"><strong>39 Bank Source Groups</strong><span>OBACIF, LIIMS, CBS_LN_PD, HR, master data</span></div>
+          <div class="arch-box arch-client" style="left:330px;top:68px;width:160px;"><strong>FTP / SFTP Drop Zone</strong><span>file arrival, archive, extract</span></div>
+          <div class="arch-box arch-client" style="left:590px;top:68px;width:165px;"><strong>Listener / Schedule</strong><span>daily, monthly, batch trigger</span></div>
+          <div class="arch-box arch-security" style="left:822px;top:68px;width:170px;"><strong>Ops User</strong><span>rerun, monitor, fix batch</span></div>
+          <div class="arch-box arch-service" style="left:290px;top:210px;width:210px;"><strong>CloverDX Jobflows</strong><span>run modules, batch flows, listeners</span></div>
+          <div class="arch-box arch-service" style="left:574px;top:210px;width:220px;"><strong>Graphs / Subgraphs</strong><span>reader, transform, validation, loader</span></div>
+          <div class="arch-box arch-service" style="left:430px;top:332px;width:220px;"><strong>Data Quality Rules</strong><span>duplicate, completeness, format, business rule, KPI</span></div>
+          <div class="arch-box arch-db" style="left:80px;top:520px;width:180px;"><strong>PostgreSQL STG</strong><span>raw load, temp, reject/error records</span></div>
+          <div class="arch-box arch-db" style="left:338px;top:520px;width:190px;"><strong>PostgreSQL Central</strong><span>validated output, KPI, grade</span></div>
+          <div class="arch-box arch-report" style="left:610px;top:520px;width:170px;"><strong>Reports / Dashboard</strong><span>DQ summary, KPI tracking</span></div>
+          <div class="arch-box arch-ext" style="left:842px;top:520px;width:165px;"><strong>Housekeeping</strong><span>archive, backup, vacuum, refresh MV</span></div>
+          <svg viewBox="0 0 1080 680" aria-hidden="true">
+            <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7a8699"/></marker></defs>
+            <path d="M252 100 C288 100 294 100 330 100" marker-end="url(#arrow)"/><path d="M490 100 C530 100 548 100 590 100" marker-end="url(#arrow)"/><path d="M675 132 C655 164 494 176 430 210" marker-end="url(#arrow)"/><path d="M395 274 C390 306 418 318 466 332" marker-end="url(#arrow)"/><path d="M684 274 C672 302 626 318 570 332" marker-end="url(#arrow)"/><path d="M445 396 C390 456 226 464 170 520" marker-end="url(#arrow)"/><path d="M540 396 C522 450 458 468 432 520" marker-end="url(#arrow)"/><path d="M528 555 C560 555 578 555 610 555" marker-end="url(#arrow)"/><path d="M780 555 C805 555 818 555 842 555" marker-end="url(#arrow)"/><path class="dash" d="M907 132 C930 226 860 330 650 360" marker-end="url(#arrow)"/>
+            <text x="286" y="91">file transfer</text><text x="512" y="91">trigger</text><text x="666" y="164">run / monitor</text><text x="280" y="468">stage load</text><text x="512" y="464">validated load</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Workflow</h2>
+      <div class="diagram"><div class="flow">
+        <div class="node input"><strong>Source Files</strong><span>39 data source groups</span></div><div class="arrow">→</div>
+        <div class="node process"><strong>Monitor</strong><span>detect arrival and route files</span></div><div class="arrow">→</div>
+        <div class="node process"><strong>Transform</strong><span>encoding, mapping, validation preparation</span></div><div class="arrow">→</div>
+        <div class="node db"><strong>Staging</strong><span>raw and controlled load</span></div><div class="arrow">→</div>
+        <div class="node process"><strong>DQ Rules</strong><span>validate, reject, KPI, grade</span></div><div class="arrow">→</div>
+        <div class="node output"><strong>Reporting Data</strong><span>centralized validated output</span></div>
+      </div></div>
+    </section>
+
+    <section>
+      <h2>Database / Infrastructure</h2>
+      <div class="grid">
+        <div class="panel"><h3>Database</h3><p>PostgreSQL staging database รองรับ raw load, temporary table, reject/error record และ duplicate check ส่วน central database เก็บ validated records, data quality flags, KPI result และ grade result</p></div>
+        <div class="panel"><h3>Infrastructure</h3><p>CloverDX Server ใช้สำหรับ orchestration, schedule, listener, batch execution, job monitoring, housekeeping, archive, backup และ database maintenance</p></div>
+      </div>
+    </section>
+  </main>
+  <script src="diagram-fit.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+:root {
+  --ink: #172033;
+  --muted: #667085;
+  --line: #d0d5dd;
+  --grid: rgba(208, 213, 221, .35);
+  --paper: #ffffff;
+  --soft: #f8fafc;
+  --blue: #1d4ed8;
+  --teal: #0f766e;
+  --green: #15803d;
+  --amber: #b45309;
+  --violet: #6d28d9;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  color: var(--ink);
+  background: #fff;
+  line-height: 1.6;
+}
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, .94);
+  backdrop-filter: blur(10px);
+}
+.brand { font-weight: 800; color: var(--ink); }
+.nav { display: flex; flex-wrap: wrap; gap: 12px; font-size: 14px; }
+
+main {
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 34px 0 72px;
+}
+
+.hero {
+  border-bottom: 3px solid var(--ink);
+  padding: 24px 0 24px;
+  margin-bottom: 24px;
+}
+h1, h2, h3 { margin: 0; line-height: 1.28; letter-spacing: 0; }
+h1 { font-size: 34px; margin-bottom: 10px; }
+h2 {
+  font-size: 23px;
+  margin-top: 34px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+h3 { font-size: 18px; margin-top: 18px; margin-bottom: 8px; }
+p { margin: 8px 0; }
+ul { margin: 8px 0 14px; padding-left: 22px; }
+li { margin: 5px 0; }
+.lead { color: var(--muted); max-width: 92ch; }
+
+.pill {
+  display: inline-block;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin: 4px 4px 0 0;
+  font-size: 13px;
+  background: #fff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 14px 0;
+}
+.grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+}
+.metric { display: block; font-size: 28px; font-weight: 800; color: var(--teal); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 18px;
+  font-size: 14px;
+}
+th, td {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+th { background: var(--soft); }
+
+.architecture-frame {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    linear-gradient(180deg, var(--grid) 1px, transparent 1px),
+    #fbfcfe;
+  background-size: 32px 32px;
+  margin-top: 14px;
+  overflow-x: auto;
+  padding: 16px;
+}
+.architecture-canvas {
+  position: relative;
+  width: 1080px;
+  height: 680px;
+  margin: 0 auto;
+}
+.architecture-canvas svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+.architecture-canvas path {
+  fill: none;
+  stroke: #7a8699;
+  stroke-width: 1.4;
+}
+.architecture-canvas .dash { stroke-dasharray: 5 5; }
+.architecture-canvas text {
+  font: 12px Arial, "Noto Sans Thai", Tahoma, sans-serif;
+  fill: #475467;
+}
+.arch-boundary {
+  position: absolute;
+  z-index: 0;
+  border: 2px solid rgba(126, 105, 74, .55);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, .35);
+}
+.arch-boundary span {
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  color: #6b5b45;
+  font-size: 12px;
+  font-weight: 700;
+}
+.arch-box {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  align-content: center;
+  min-height: 64px;
+  padding: 10px 12px;
+  border: 1px solid #9aa8bc;
+  border-radius: 6px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(23, 32, 51, .08);
+}
+.arch-box::before {
+  display: inline-grid;
+  width: 28px;
+  height: 24px;
+  margin: 0 auto 4px;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  color: #475467;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+}
+.arch-client::before { content: 'U'; border-radius: 50%; color: #2563eb; }
+.arch-db::before { content: 'DB'; border-radius: 50% / 28%; color: #15803d; }
+.arch-ext::before { content: 'F'; color: #475467; }
+.arch-service::before { content: 'API'; color: #c2410c; }
+.arch-security::before { content: 'AUTH'; color: #4f46e5; }
+.arch-report::before { content: 'VIEW'; color: #a16207; }
+.arch-box strong { display: block; font-size: 14px; line-height: 1.25; }
+.arch-box span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.35; }
+.arch-client { background: #e0f2fe; border-color: #38bdf8; }
+.arch-service { background: #fff1e8; border-color: #fb8a5b; }
+.arch-db { background: #dcfce7; border-color: #22c55e; }
+.arch-ext { background: #f1f5f9; border-color: #cbd5e1; }
+.arch-security { background: #eef2ff; border-color: #818cf8; }
+.arch-report { background: #fef9c3; border-color: #eab308; }
+
+.diagram {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: linear-gradient(180deg, #fff, #f8fafc);
+  overflow-x: auto;
+  margin: 14px 0 18px;
+}
+.flow { display: flex; align-items: stretch; gap: 10px; min-width: 860px; }
+.node {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  padding: 12px;
+  min-width: 150px;
+  flex: 1;
+}
+.node strong { display: block; margin-bottom: 5px; }
+.node span { color: var(--muted); font-size: 13px; }
+.input { border-top: 4px solid var(--blue); }
+.process { border-top: 4px solid var(--teal); }
+.db { border-top: 4px solid var(--violet); }
+.output { border-top: 4px solid var(--green); }
+.infra { border-top: 4px solid var(--amber); }
+.arrow { display: flex; align-items: center; color: var(--muted); font-weight: 800; }
+
+.lanes { display: grid; gap: 12px; margin: 14px 0; }
+.lane {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.lane-title { background: var(--ink); color: #fff; padding: 12px; font-weight: 700; }
+.lane-body { padding: 12px; background: #fff; }
+
+.swimlane {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow-x: auto;
+  background: #fff;
+  margin: 14px 0 18px;
+}
+.swim-row {
+  display: grid;
+  grid-template-columns: 150px repeat(6, 150px);
+  min-width: 1050px;
+  border-bottom: 1px solid var(--line);
+}
+.swim-row:last-child { border-bottom: 0; }
+.swim-head {
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+}
+.swim-cell {
+  min-height: 82px;
+  padding: 10px;
+  border-right: 1px solid var(--line);
+  display: grid;
+  align-content: center;
+  font-size: 13px;
+}
+.swim-cell:last-child { border-right: 0; }
+.swim-system {
+  background: #f8fafc;
+  font-weight: 800;
+  color: var(--ink);
+}
+.swim-step {
+  border-left: 4px solid var(--teal);
+  background: #fff;
+}
+.swim-step strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.25;
+}
+.swim-step span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+.swim-payment { border-left-color: var(--amber); background: #fffdf2; }
+.swim-web { border-left-color: var(--blue); background: #eff6ff; }
+
+@media (max-width: 800px) {
+  main { width: min(100% - 24px, 1200px); }
+  .topbar { position: static; align-items: flex-start; flex-direction: column; }
+  h1 { font-size: 26px; }
+  h2 { font-size: 21px; }
+  .grid, .grid.three { grid-template-columns: 1fr; }
+  .lane { grid-template-columns: 1fr; }
+  .architecture-frame { padding: 10px; }
+
+  /* bare content tables (not inside .architecture-frame / .swimlane / .diagram)
+     become their own horizontal-scroll strip instead of forcing the whole
+     page to scroll sideways */
+  table { display: block; max-width: 100%; overflow-x: auto; white-space: nowrap; }
+  table tr { display: table-row; }
+
+  /* linear workflow diagrams: let steps wrap to a second line instead of
+     forcing min-width: 860px full-page horizontal scroll */
+  .flow { min-width: 0; flex-wrap: wrap; }
+  .node { min-width: 130px; flex: 1 1 130px; }
+  .arrow { min-width: 0; flex-basis: 100%; justify-content: flex-start; height: 0; }
+}
+
+/* .architecture-canvas is fixed at 1080x680 by design (see diagram-fit.js,
+   which scales it to fit the viewport without altering the diagram itself).
+   Below this width even a full-scale-down pass would make the diagram text
+   unreadable, so diagram-fit.js leaves it at native size and this frame
+   falls back to its original horizontal scroll instead. */
+@media (max-width: 460px) {
+  .architecture-frame { overflow-x: auto; }
+}
+
+@media print {
+  .topbar { position: static; }
+  main { width: 100%; padding: 10px 0; }
+  .architecture-frame, .diagram { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+  .architecture-canvas { transform: none !important; margin-bottom: 0 !important; }
+  .architecture-frame { overflow: visible !important; }
+}

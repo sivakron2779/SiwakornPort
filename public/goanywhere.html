@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GoAnywhere MFT - Architecture</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="index.html">Architecture Showcase</a>
+    <div class="nav"><a href="dqm.html">DQM</a><a href="crm-pega.html">Next: CRM PEGA</a><a href="index.html">Index</a></div>
+  </div>
+  <main>
+    <header class="hero">
+      <h1>GoAnywhere MFT</h1>
+      <p class="lead">Secure Managed File Transfer สำหรับเชื่อมต่อ SFTP, ควบคุม user permission, รับส่งไฟล์อัตโนมัติ, ทำ ETL file transform และเก็บ audit log ของ job</p>
+      <p><span class="pill">GoAnywhere MFT</span><span class="pill">SFTP</span><span class="pill">SSH Key</span><span class="pill">Trigger</span><span class="pill">ETL</span></p>
+    </header>
+
+    <section>
+      <h2>Connected Architecture Map</h2>
+      <div class="architecture-frame"><div class="architecture-canvas">
+        <div class="arch-boundary" style="left:48px;top:34px;width:984px;height:108px;"><span>Users / Partner Endpoints</span></div>
+        <div class="arch-boundary" style="left:178px;top:176px;width:724px;height:266px;"><span>GoAnywhere Managed File Transfer</span></div>
+        <div class="arch-boundary" style="left:48px;top:486px;width:984px;height:138px;"><span>Data, Security, Output</span></div>
+        <div class="arch-box arch-client" style="left:82px;top:70px;width:170px;"><strong>Partner SFTP</strong><span>inbox / outbox, SSH key</span></div>
+        <div class="arch-box arch-client" style="left:334px;top:70px;width:165px;"><strong>Web User</strong><span>virtual folder, permission</span></div>
+        <div class="arch-box arch-client" style="left:592px;top:70px;width:170px;"><strong>Scheduler / Trigger</strong><span>event-based and timed run</span></div>
+        <div class="arch-box arch-security" style="left:834px;top:70px;width:155px;"><strong>Admin</strong><span>designer, monitor, audit</span></div>
+        <div class="arch-box arch-service" style="left:278px;top:214px;width:210px;"><strong>GoAnywhere Projects</strong><span>XML workflow definitions</span></div>
+        <div class="arch-box arch-service" style="left:590px;top:214px;width:210px;"><strong>Transfer Jobs</strong><span>connection test, inbound, outbound</span></div>
+        <div class="arch-box arch-service" style="left:430px;top:344px;width:220px;"><strong>ETL / Security Jobs</strong><span>CSV transform, DB to CSV, PGP, housekeeping</span></div>
+        <div class="arch-box arch-db" style="left:82px;top:528px;width:170px;"><strong>Database</strong><span>source query / DB export</span></div>
+        <div class="arch-box arch-ext" style="left:326px;top:528px;width:170px;"><strong>CSV Files</strong><span>input, transform, output</span></div>
+        <div class="arch-box arch-security" style="left:584px;top:528px;width:170px;"><strong>PGP / SSH Keys</strong><span>encryption and secure access</span></div>
+        <div class="arch-box arch-report" style="left:834px;top:528px;width:160px;"><strong>Audit / Report</strong><span>status, job log, result</span></div>
+        <svg viewBox="0 0 1080 680" aria-hidden="true"><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7a8699"/></marker></defs><path d="M252 104 C318 132 342 168 378 214" marker-end="url(#arrow)"/><path d="M418 142 C406 166 398 188 392 214" marker-end="url(#arrow)"/><path d="M676 142 C675 168 682 188 692 214" marker-end="url(#arrow)"/><path d="M834 106 C804 128 760 166 726 214" marker-end="url(#arrow)"/><path d="M488 250 C526 250 552 250 590 250" marker-end="url(#arrow)"/><path d="M678 278 C650 312 610 328 566 344" marker-end="url(#arrow)"/><path d="M382 278 C402 318 426 330 472 344" marker-end="url(#arrow)"/><path d="M478 408 C420 468 230 474 166 528" marker-end="url(#arrow)"/><path d="M528 408 C512 460 438 484 410 528" marker-end="url(#arrow)"/><path d="M576 408 C608 462 650 486 668 528" marker-end="url(#arrow)"/><path d="M650 384 C738 424 870 472 914 528" marker-end="url(#arrow)"/><path class="dash" d="M252 554 C286 506 356 454 444 384" marker-end="url(#arrow)"/><text x="270" y="148">SFTP</text><text x="522" y="240">run job</text><text x="282" y="488">DB to CSV</text><text x="626" y="472">encrypt/sign</text></svg>
+      </div></div>
+    </section>
+
+    <section>
+      <h2>Workflow / Infrastructure</h2>
+      <div class="grid">
+        <div class="panel"><h3>Main Workflow</h3><p>SFTP connection test, inbound transfer, outbound transfer, web user setup, trigger reference, CSV transform และ DB to CSV export</p></div>
+        <div class="panel"><h3>Security Model</h3><p>ใช้ SFTP, SSH key, web user permission, virtual folder, encryption และ audit log เพื่อควบคุมการรับส่งไฟล์และตรวจสอบย้อนหลัง</p></div>
+      </div>
+    </section>
+  </main>
+  <script src="diagram-fit.js" defer></script>
+</body>
+</html>

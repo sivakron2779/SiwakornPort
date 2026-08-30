@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CRM Lead / PEGA - Architecture</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="index.html">Architecture Showcase</a>
+    <div class="nav"><a href="goanywhere.html">GoAnywhere</a><a href="incidentweb.html">Next: IncidentWeb</a><a href="index.html">Index</a></div>
+  </div>
+  <main>
+    <header class="hero">
+      <h1>CRM Lead Management / PEGA Blueprint</h1>
+      <p class="lead">Workflow blueprint สำหรับกระบวนการสินเชื่อและ CRM ครอบคลุม case lifecycle, role, approval step, data object และ feedback process</p>
+      <p><span class="pill">PEGA Blueprint</span><span class="pill">CRM</span><span class="pill">Approval</span><span class="pill">BPM</span></p>
+    </header>
+    <section>
+      <h2>Connected Architecture Map</h2>
+      <div class="architecture-frame"><div class="architecture-canvas">
+        <div class="arch-boundary" style="left:48px;top:34px;width:984px;height:112px;"><span>Business Channels / Roles</span></div>
+        <div class="arch-boundary" style="left:168px;top:180px;width:744px;height:270px;"><span>PEGA Case Workflow Layer</span></div>
+        <div class="arch-boundary" style="left:48px;top:494px;width:984px;height:134px;"><span>Data Objects / Reporting / Feedback</span></div>
+        <div class="arch-box arch-client" style="left:76px;top:72px;width:170px;"><strong>Lead / Customer</strong><span>loan request, document</span></div>
+        <div class="arch-box arch-client" style="left:330px;top:72px;width:170px;"><strong>Branch / Sales</strong><span>create case, collect document</span></div>
+        <div class="arch-box arch-security" style="left:586px;top:72px;width:170px;"><strong>Approver</strong><span>review, approve, reject</span></div>
+        <div class="arch-box arch-client" style="left:834px;top:72px;width:160px;"><strong>Operations</strong><span>feedback, agreement, status</span></div>
+        <div class="arch-box arch-service" style="left:242px;top:218px;width:210px;"><strong>Module 1</strong><span>Government Credit Service Approval</span></div>
+        <div class="arch-box arch-service" style="left:594px;top:218px;width:210px;"><strong>Module 2</strong><span>Report and Unit Analysis Approval</span></div>
+        <div class="arch-box arch-service" style="left:414px;top:354px;width:240px;"><strong>Module 3</strong><span>Government Employee Lending Agreement</span></div>
+        <div class="arch-box arch-db" style="left:84px;top:532px;width:160px;"><strong>Data Objects</strong><span>case, customer, loan, document</span></div>
+        <div class="arch-box arch-report" style="left:332px;top:532px;width:170px;"><strong>Workflows</strong><span>approval, analysis, agreement</span></div>
+        <div class="arch-box arch-ext" style="left:582px;top:532px;width:170px;"><strong>Blueprint Docs</strong><span>process model, field mapping</span></div>
+        <div class="arch-box arch-report" style="left:834px;top:532px;width:160px;"><strong>Feedback Loop</strong><span>status, correction, handoff</span></div>
+        <svg viewBox="0 0 1080 680" aria-hidden="true"><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7a8699"/></marker></defs><path d="M246 106 C292 130 318 176 346 218" marker-end="url(#arrow)"/><path d="M416 146 C402 172 382 196 362 218" marker-end="url(#arrow)"/><path d="M670 146 C682 172 690 194 700 218" marker-end="url(#arrow)"/><path d="M834 108 C788 136 744 178 704 218" marker-end="url(#arrow)"/><path d="M452 260 C500 288 540 318 584 354" marker-end="url(#arrow)"/><path d="M670 282 C628 316 598 334 566 354" marker-end="url(#arrow)"/><path d="M468 418 C378 472 216 484 166 532" marker-end="url(#arrow)"/><path d="M524 418 C500 470 442 500 418 532" marker-end="url(#arrow)"/><path d="M594 418 C624 470 660 494 668 532" marker-end="url(#arrow)"/><path d="M654 386 C754 416 884 470 914 532" marker-end="url(#arrow)"/><path class="dash" d="M914 532 C950 420 930 212 914 136" marker-end="url(#arrow)"/><text x="282" y="166">create case</text><text x="722" y="166">approval</text><text x="520" y="326">handoff</text><text x="734" y="464">feedback</text></svg>
+      </div></div>
+    </section>
+    <section>
+      <h2>Process / Data Model</h2>
+      <table><tr><th>Area</th><th>Description</th></tr><tr><td>Case Intake</td><td>รับคำขอจาก lead/customer และสร้าง case พร้อมเอกสารประกอบ</td></tr><tr><td>Approval Flow</td><td>กำหนด step การวิเคราะห์ อนุมัติ ปฏิเสธ และส่งกลับแก้ไข</td></tr><tr><td>Data Objects</td><td>customer, loan request, document, approval status, agreement และ feedback information</td></tr><tr><td>Output</td><td>blueprint ที่ใช้เป็นฐานสำหรับ implementation และ communication ระหว่าง business กับ technical team</td></tr></table>
+    </section>
+  </main>
+  <script src="diagram-fit.js" defer></script>
+</body>
+</html>

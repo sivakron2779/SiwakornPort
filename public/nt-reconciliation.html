@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NT Reconciliation Payment - Architecture</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="topbar">
+    <a class="brand" href="index.html">Architecture Showcase</a>
+    <div class="nav"><a href="incidentweb.html">IncidentWeb</a><a href="petsinto.html">Next: PetsInto</a><a href="index.html">Index</a></div>
+  </div>
+
+  <main>
+    <header class="hero">
+      <h1>NT Reconciliation / Payment Process</h1>
+      <p class="lead">Process flow รายระบบสำหรับงาน payment reconciliation ตั้งแต่นำไฟล์จากระบบต้นทางเข้า staging ตรวจ mapping/validation เทียบ payment/billing result บันทึกผล reconcile และแสดงผลบนหน้าเว็บ</p>
+      <p><span class="pill">File Ingestion</span><span class="pill">Payment Matching</span><span class="pill">Reconciliation DB</span><span class="pill">Web Dashboard</span></p>
+    </header>
+
+    <section>
+      <h2>Connected Architecture Map</h2>
+      <div class="architecture-frame">
+        <div class="architecture-canvas">
+          <div class="arch-boundary" style="left:40px;top:30px;width:1000px;height:118px;"><span>Source File Providers</span></div>
+          <div class="arch-boundary" style="left:120px;top:178px;width:840px;height:276px;"><span>Payment Reconciliation Processing</span></div>
+          <div class="arch-boundary" style="left:40px;top:496px;width:1000px;height:132px;"><span>Database / API / Web Presentation</span></div>
+
+          <div class="arch-box arch-client" style="left:66px;top:72px;width:130px;"><strong>OM</strong><span>order file</span></div>
+          <div class="arch-box arch-client" style="left:218px;top:72px;width:130px;"><strong>NTPOS</strong><span>payment file</span></div>
+          <div class="arch-box arch-client" style="left:370px;top:72px;width:150px;"><strong>Customer360</strong><span>customer file</span></div>
+          <div class="arch-box arch-client" style="left:542px;top:72px;width:150px;"><strong>Web Self Care</strong><span>online payment file</span></div>
+          <div class="arch-box arch-client" style="left:714px;top:72px;width:130px;"><strong>BRM</strong><span>billing file</span></div>
+          <div class="arch-box arch-client" style="left:866px;top:72px;width:140px;"><strong>Billing Gateway</strong><span>payment status file</span></div>
+
+          <div class="arch-box arch-service" style="left:166px;top:216px;width:190px;"><strong>File Ingestion</strong><span>receive, archive, batch control</span></div>
+          <div class="arch-box arch-service" style="left:446px;top:216px;width:190px;"><strong>Staging & Mapping</strong><span>normalize fields, reference keys</span></div>
+          <div class="arch-box arch-service" style="left:720px;top:216px;width:190px;"><strong>Validation</strong><span>format, duplicate, missing reference</span></div>
+          <div class="arch-box arch-service" style="left:306px;top:356px;width:210px;"><strong>Payment Matching</strong><span>amount, date, order, customer, billing ref</span></div>
+          <div class="arch-box arch-service" style="left:596px;top:356px;width:210px;"><strong>Exception Rules</strong><span>matched, unmatched, pending, discrepancy</span></div>
+
+          <div class="arch-box arch-db" style="left:86px;top:532px;width:170px;"><strong>Staging Tables</strong><span>raw source snapshots</span></div>
+          <div class="arch-box arch-db" style="left:332px;top:532px;width:190px;"><strong>Reconcile DB</strong><span>payment result, status, reason code</span></div>
+          <div class="arch-box arch-service" style="left:604px;top:532px;width:160px;"><strong>Backend API</strong><span>query, filter, summary</span></div>
+          <div class="arch-box arch-report" style="left:842px;top:532px;width:170px;"><strong>Web Dashboard</strong><span>payment status, mismatch, drilldown</span></div>
+
+          <svg viewBox="0 0 1080 680" aria-hidden="true">
+            <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7a8699"/></marker></defs>
+            <path d="M130 136 C160 170 210 194 250 216" marker-end="url(#arrow)"/>
+            <path d="M282 136 C280 170 278 194 270 216" marker-end="url(#arrow)"/>
+            <path d="M450 136 C410 170 340 198 290 216" marker-end="url(#arrow)"/>
+            <path d="M616 136 C564 168 536 194 532 216" marker-end="url(#arrow)"/>
+            <path d="M778 136 C752 168 766 194 790 216" marker-end="url(#arrow)"/>
+            <path d="M936 136 C904 168 860 194 820 216" marker-end="url(#arrow)"/>
+            <path d="M356 252 C392 252 410 252 446 252" marker-end="url(#arrow)"/>
+            <path d="M636 252 C672 252 686 252 720 252" marker-end="url(#arrow)"/>
+            <path d="M526 280 C486 318 450 338 422 356" marker-end="url(#arrow)"/>
+            <path d="M800 280 C750 326 684 346 694 356" marker-end="url(#arrow)"/>
+            <path d="M406 420 C356 474 224 494 172 532" marker-end="url(#arrow)"/>
+            <path d="M470 420 C466 474 438 502 428 532" marker-end="url(#arrow)"/>
+            <path d="M700 420 C676 474 672 502 684 532" marker-end="url(#arrow)"/>
+            <path d="M764 566 C792 566 814 566 842 566" marker-end="url(#arrow)"/>
+            <path class="dash" d="M522 566 C552 566 574 566 604 566" marker-end="url(#arrow)"/>
+            <text x="184" y="180">daily file</text>
+            <text x="382" y="244">load</text>
+            <text x="652" y="244">validate</text>
+            <text x="492" y="328">payment match</text>
+            <text x="774" y="558">REST / query</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Process Per System</h2>
+      <div class="swimlane">
+        <div class="swim-row swim-head">
+          <div class="swim-cell">System</div>
+          <div class="swim-cell">1. File In</div>
+          <div class="swim-cell">2. Staging</div>
+          <div class="swim-cell">3. Mapping</div>
+          <div class="swim-cell">4. Payment Check</div>
+          <div class="swim-cell">5. Reconcile Result</div>
+          <div class="swim-cell">6. Web View</div>
+        </div>
+        <div class="swim-row">
+          <div class="swim-cell swim-system">OM</div>
+          <div class="swim-cell swim-step"><strong>Order File</strong><span>รับไฟล์ order / service transaction</span></div>
+          <div class="swim-cell swim-step"><strong>Raw Order</strong><span>เก็บ snapshot ตามรอบ batch</span></div>
+          <div class="swim-cell swim-step"><strong>Order Key</strong><span>map order no, customer, service</span></div>
+          <div class="swim-cell swim-step swim-payment"><strong>Match Payment</strong><span>เทียบกับยอดชำระและ billing ref</span></div>
+          <div class="swim-cell swim-step"><strong>Status</strong><span>paid, unpaid, mismatch</span></div>
+          <div class="swim-cell swim-step swim-web"><strong>Order Payment View</strong><span>แสดงสถานะตาม order</span></div>
+        </div>
+        <div class="swim-row">
+          <div class="swim-cell swim-system">NTPOS</div>
+          <div class="swim-cell swim-step"><strong>POS File</strong><span>รับรายการรับเงินจากช่องทางขาย</span></div>
+          <div class="swim-cell swim-step"><strong>Raw POS</strong><span>เก็บ transaction รายวัน</span></div>
+          <div class="swim-cell swim-step"><strong>Payment Key</strong><span>map receipt, amount, paid date</span></div>
+          <div class="swim-cell swim-step swim-payment"><strong>Compare Amount</strong><span>เทียบยอดกับ billing และ order</span></div>
+          <div class="swim-cell swim-step"><strong>Result</strong><span>matched หรือ amount mismatch</span></div>
+          <div class="swim-cell swim-step swim-web"><strong>Payment List</strong><span>filter ตาม date/channel/status</span></div>
+        </div>
+        <div class="swim-row">
+          <div class="swim-cell swim-system">Customer360</div>
+          <div class="swim-cell swim-step"><strong>Customer File</strong><span>รับ profile/reference customer</span></div>
+          <div class="swim-cell swim-step"><strong>Raw Customer</strong><span>เก็บข้อมูลอ้างอิงลูกค้า</span></div>
+          <div class="swim-cell swim-step"><strong>Customer Key</strong><span>normalize customer id / account</span></div>
+          <div class="swim-cell swim-step swim-payment"><strong>Owner Verify</strong><span>ผูก payment กับ customer/account</span></div>
+          <div class="swim-cell swim-step"><strong>Reference Status</strong><span>valid / missing customer</span></div>
+          <div class="swim-cell swim-step swim-web"><strong>Customer Drilldown</strong><span>ดูประวัติรายการของลูกค้า</span></div>
+        </div>
+        <div class="swim-row">
+          <div class="swim-cell swim-system">Web Self Care</div>
+          <div class="swim-cell swim-step"><strong>Online File</strong><span>รับรายการชำระจากช่องทาง self-service</span></div>
+          <div class="swim-cell swim-step"><strong>Raw Online</strong><span>เก็บรายการตามรอบนำเข้า</span></div>
+          <div class="swim-cell swim-step"><strong>Channel Key</strong><span>map channel, transaction, timestamp</span></div>
+          <div class="swim-cell swim-step swim-payment"><strong>Gateway Match</strong><span>เทียบสถานะกับ billing gateway</span></div>
+          <div class="swim-cell swim-step"><strong>Channel Result</strong><span>success, failed, pending</span></div>
+          <div class="swim-cell swim-step swim-web"><strong>Online Payment View</strong><span>แสดงรายการตาม channel</span></div>
+        </div>
+        <div class="swim-row">
+          <div class="swim-cell swim-system">BRM</div>
+          <div class="swim-cell swim-step"><strong>Billing File</strong><span>รับ billing account / charge</span></div>
+          <div class="swim-cell swim-step"><strong>Raw Billing</strong><span>เก็บยอดและรอบบิล</span></div>
+          <div class="swim-cell swim-step"><strong>Billing Ref</strong><span>map invoice, account, charge</span></div>
+          <div class="swim-cell swim-step swim-payment"><strong>Paid Check</strong><span>ตรวจยอดที่ควรถูกชำระ</span></div>
+          <div class="swim-cell swim-step"><strong>Billing Status</strong><span>settled, outstanding, discrepancy</span></div>
+          <div class="swim-cell swim-step swim-web"><strong>Billing Summary</strong><span>ยอดรวมและรายการผิดปกติ</span></div>
+        </div>
+        <div class="swim-row">
+          <div class="swim-cell swim-system">Billing Gateway</div>
+          <div class="swim-cell swim-step"><strong>Gateway File</strong><span>รับ payment response/status</span></div>
+          <div class="swim-cell swim-step"><strong>Raw Gateway</strong><span>เก็บ response code และ timestamp</span></div>
+          <div class="swim-cell swim-step"><strong>Transaction Ref</strong><span>map gateway ref กับ payment/order</span></div>
+          <div class="swim-cell swim-step swim-payment"><strong>Status Check</strong><span>success, failed, timeout, reversed</span></div>
+          <div class="swim-cell swim-step"><strong>Exception</strong><span>missing ref, duplicated, timeout</span></div>
+          <div class="swim-cell swim-step swim-web"><strong>Exception Dashboard</strong><span>แสดงรายการที่ต้องตรวจสอบ</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Database / Web Presentation</h2>
+      <div class="grid">
+        <div class="panel">
+          <h3>Database Structure</h3>
+          <p>แบ่งเป็น raw staging tables สำหรับเก็บไฟล์นำเข้าตาม source, mapping tables สำหรับ normalize key, reconcile result tables สำหรับเก็บสถานะ payment และ exception tables สำหรับรายการที่ไม่ตรงหรือรอตรวจสอบ</p>
+        </div>
+        <div class="panel">
+          <h3>Web Presentation</h3>
+          <p>หน้าเว็บแสดง summary payment status, matched/unmatched count, exception list, filter ตามระบบ/วันที่/channel/status และ drilldown ราย transaction เพื่อให้ทีมตรวจสอบรายการผิดปกติได้เร็วขึ้น</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="diagram-fit.js" defer></script>
+</body>
+</html>
