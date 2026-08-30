@@ -277,7 +277,7 @@ const defaultHotspots = [
 ];
 
 function App() {
-  const [activeId, setActiveId] = useState('incidentweb');
+  const [activeId, setActiveId] = useState('dqm');
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isImageOpen, setIsImageOpen] = useState(false);
@@ -517,7 +517,7 @@ function App() {
                         className={selectedBlock?.label === block.label ? 'image-hotspot selected' : 'image-hotspot'}
                         type="button"
                         key={block.label}
-                        style={{ left: `${(180 + block.x) / 14.4}%`, top: `${(414 + block.y) / 11}%`, width: `${block.w / 14.4}%`, height: `${block.h / 11}%`, '--touch-delay': `${(blockCatalog[activeProject.id].indexOf(block) % 5) * 0.32}s` }}
+                        style={{ left: `${(16 + block.x) / 11.2}%`, top: `${(16 + block.y) / 7.2}%`, width: `${block.w / 11.2}%`, height: `${block.h / 7.2}%`, '--touch-delay': `${(blockCatalog[activeProject.id].indexOf(block) % 5) * 0.32}s` }}
                         aria-label={`ดูรายละเอียด ${block.label}`}
                         onClick={(clickEvent) => {
                           const target = clickEvent.currentTarget.getBoundingClientRect();
